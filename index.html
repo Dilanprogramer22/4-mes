@@ -3,170 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Mi Persona Favorita</title>
+    <title>Nuestra Historia - 4 Meses</title>
     <style>
+        :root {
+            --dorado: #d4a373;
+            --cafe: #8e735b;
+            --rojo: #c0392b;
+            --fondo: #1a1a1a;
+        }
+
         body {
             background: linear-gradient(135deg, #1a1a1a 0%, #2c3e50 100%);
             color: #f4f4f4;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* Pantalla de Pregunta Inicial */
-        #pregunta {
+        .card {
+            background: rgba(30, 30, 30, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--cafe);
+            max-width: 450px;
+            width: 90%;
             text-align: center;
-            display: block;
+            transition: all 0.5s ease;
         }
 
-        .btn-container {
-            margin-top: 20px;
-            position: relative;
-            height: 100px;
+        h2 { color: var(--dorado); font-size: 1.5rem; margin-bottom: 20px; }
+        
+        input {
+            width: 80%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--cafe);
+            background: #2c2c2c;
+            color: white;
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 15px;
         }
 
         button {
-            padding: 10px 25px;
-            font-size: 1.2rem;
-            border-radius: 10px;
+            background: var(--dorado);
+            color: #1a1a1a;
             border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
-            font-weight: bold;
         }
 
-        #si {
-            background-color: #d4a373;
-            color: #1a1a1a;
+        button:hover { transform: scale(1.05); background: #e5b585; }
+
+        .hidden { display: none; }
+
+        .feedback {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            min-height: 1.2rem;
+            color: #ff7675;
         }
 
-        #no {
-            background-color: #c0392b;
-            color: white;
-            position: absolute;
-        }
-
-        /* Contenedor Principal (Oculto al inicio) */
-        .container {
-            display: none; /* Se activa con JS */
-            text-align: center;
-            background: rgba(30, 30, 30, 0.9);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
-            border: 2px solid #8e735b;
-            max-width: 450px;
-            width: 90%;
-            animation: fadeIn 1.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Estilos del mensaje final */
+        .message-box {
+            max-height: 300px;
+            overflow-y: auto;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--cafe) transparent;
         }
 
         .anime-char {
-            width: 140px;
-            height: 140px;
+            width: 120px; height: 120px;
             border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #8e735b;
+            border: 3px solid var(--cafe);
             margin-bottom: 15px;
-            box-shadow: 0 0 15px rgba(142, 115, 91, 0.5);
         }
 
-        h1 {
-            color: #d4a373;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .message-box {
-            max-height: 250px;
-            overflow-y: auto;
-            padding: 15px;
-            text-align: left;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            margin-bottom: 15px;
-            scrollbar-width: thin;
-            scrollbar-color: #8e735b transparent;
-        }
-
-        .message-box::-webkit-scrollbar { width: 6px; }
-        .message-box::-webkit-scrollbar-thumb { background-color: #8e735b; border-radius: 10px; }
-
-        p { line-height: 1.7; font-size: 1rem; margin: 0; color: #e0e0e0; }
-
-        .heart {
-            color: #c0392b;
-            font-size: 2rem;
-            animation: latido 1.2s infinite;
+        .btn-link {
+            display: inline-block;
+            margin-top: 20px;
+            background: var(--rojo);
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            animation: latido 1.5s infinite;
         }
 
         @keyframes latido {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(192, 57, 43, 0); }
             100% { transform: scale(1); }
+        }
+
+        .shake { animation: shake 0.4s; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
     </style>
 </head>
 <body>
 
-    <div id="pregunta">
-        <h1>¿Me permites decirte algo importante? ✨</h1>
-        <div class="btn-container">
-            <button id="si">¡Sí, claro!</button>
-            <button id="no">No</button>
-        </div>
+    <div id="step1" class="card">
+        <h2>¿Recuerdas qué día empezó nuestra historia? ✨</h2>
+        <p style="font-size: 0.8rem; color: #888;">Pista: DD/MM/AAAA</p>
+        <input type="text" id="ans1" placeholder="00/00/0000">
+        <button onclick="checkStep1()">Verificar</button>
+        <div id="feed1" class="feedback"></div>
     </div>
 
-    <div class="container" id="contenido">
+    <div id="step2" class="card hidden">
+        <h2>¿Cuál es uno de nuestros apodos favoritos? 🍊</h2>
+        <input type="text" id="ans2" placeholder="m... o c...">
+        <button onclick="checkStep2()">Continuar</button>
+        <div id="feed2" class="feedback"></div>
+    </div>
+
+    <div id="final" class="card hidden">
         <img src="images.jpg" alt="Dazai" class="anime-char">
-
         <h1>¡Feliz 4 Meses! ✨</h1>
-
         <div class="message-box">
+            <p id="recuerdos-texto" style="color: var(--dorado); font-style: italic; margin-bottom: 15px;"></p>
             <p>
-                Holaa, Espero que estes muy bien. Hoy me encuentro muy feliz porque cumplo 4 meses contigo a veces pienso que es mas pero no JSJSJSJ<br><br>
-                Yendo al grano te quiero agradecer por volverme una persona tan importante en tu vida, por quererme como lo haces... Porque no solo soy tu novio sino un tipo de mejor amigo gracias por considerarme tal, tu también eres muy importante para mí, eres la persona en la que más confío, en la que encuentro mi lugar seguro. <br><br>
-                En estos 4 meses la he pasado bien, he sido feliz aunque estos días me haces falta porque DIOSSS SJSJSJ. Pero bueno, quiero seguir más a tu lado, aprender junto a ti y demostrarte que eres lo mejor que me ha pasado. <br><br>
-                Sé que la cago muy seguido y me disculpo demasiado por eso quiero tambien ser tu lugar seguro si me lo permites, quiero que te sientas orgullosa de mí. <br><br>
-                <b>Gracias por estos 4 meses increíbles a mi lado. Eres mi persona favorita.</b><br><br>
-                <b>Recuerdas el dibujo que me hiciste es muy importante para mi, porque le dedicaste tiempo.</b><br><br>
-                Y es algo que tu sabes hacer asi que yo te dedico lo que se y lo que puedo darte  
-                y será con mucho amor y cariño porque así me he sentido con los momentos que he tenido a tu lado y los que podamos pasar juntos.
+                Holaa, espero que estés muy bien. Hoy me encuentro muy feliz porque cumplo 4 meses contigo... <br><br>
+                Te quiero agradecer por volverme alguien tan importante en tu vida. No solo soy tu novio, sino tu mejor amigo. Eres mi lugar seguro. <br><br>
+                Sé que a veces la cago, pero quiero que te sientas orgullosa de mí. Gracias por el dibujo que me hiciste, significa todo para mí porque sé el tiempo y amor que le pusiste. Yo te dedico lo que sé hacer y lo que puedo darte, siempre con mucho cariño por lo que me haces sentir.
             </p>
         </div>
-
-        <div class="heart">❤</div>
+        
+        <a href="https://youtu.be/TWXWZegL6Dc?si=KZBEgL0mDcFlcYNH" target="_blank" class="btn-link">
+            QUIERO AMARTE MUCHO ❤️
+        </a>
     </div>
 
     <script>
-        const btnNo = document.getElementById('no');
-        const btnSi = document.getElementById('si');
-        const seccionPregunta = document.getElementById('pregunta');
-        const seccionContenido = document.getElementById('contenido');
+        function checkStep1() {
+            const val = document.getElementById('ans1').value;
+            const card = document.getElementById('step1');
+            if(val === "02/08/2024") {
+                card.classList.add('hidden');
+                document.getElementById('step2').classList.remove('hidden');
+            } else {
+                showError('feed1', "Esa no es la fecha... ¡Haz memoria! ❤️", card);
+            }
+        }
 
-        // Función para mover el botón NO
-        btnNo.addEventListener('mouseover', () => {
-            const x = Math.random() * (window.innerWidth - btnNo.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btnNo.offsetHeight);
-            
-            btnNo.style.left = `${x}px`;
-            btnNo.style.top = `${y}px`;
-        });
+        function checkStep2() {
+            const val = document.getElementById('ans2').value.toLowerCase();
+            const card = document.getElementById('step2');
+            if(val.includes("mandarinita") || val.includes("chikibeibi")) {
+                card.classList.add('hidden');
+                document.getElementById('final').classList.remove('hidden');
+                document.getElementById('recuerdos-texto').innerText = "Aquel 02/08 sentí una fascinación y felicidad inmensa. Fue gracioso cómo empezamos a hablar, pero me sentí raro porque empecé a vivir cosas que nunca había sentido antes. Por eso te quiero tanto...";
+            } else {
+                showError('feed2', "¡Casi! Empieza por M o por C...", card);
+            }
+        }
 
-        // Al hacer clic en SI
-        btnSi.addEventListener('click', () => {
-            seccionPregunta.style.display = 'none';
-            seccionContenido.style.display = 'block';
-        });
+        function showError(id, msg, card) {
+            const f = document.getElementById(id);
+            f.innerText = msg;
+            card.classList.add('shake');
+            setTimeout(() => card.classList.remove('shake'), 400);
+        }
     </script>
 </body>
 </html>
